@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{thompson1933likelihood}
+William~R Thompson.
+\newblock On the likelihood that one unknown probability exceeds another in
+  view of the evidence of two samples.
+\newblock {\em Biometrika}, 25(3/4):285--294, 1933.
+
+\bibitem{CL11}
+Olivier Chapelle and Lihong Li.
+\newblock An empirical evaluation of thompson sampling.
+\newblock In J.~Shawe-Taylor, R.~S. Zemel, P.~L. Bartlett, F.~Pereira, and
+  K.~Q. Weinberger, editors, {\em Advances in Neural Information Processing
+  Systems 24}, pages 2249--2257. Curran Associates, Inc., 2011.
+
+\bibitem{agrawal2013further}
+Shipra Agrawal and Navin Goyal.
+\newblock Further optimal regret bounds for thompson sampling.
+\newblock In {\em Artificial Intelligence and Statistics}, pages 99--107, 2013.
+
+\end{thebibliography}

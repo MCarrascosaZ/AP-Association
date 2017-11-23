@@ -1,18 +1,174 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\title{Plantilla}
-\author{palomitaseca }
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{fullpage}
+\usepackage{algorithmic}
+\DeclareMathOperator*{\argmin}{argmin}
+\algsetup{linenosize=\small}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{multirow}
+\usepackage[super]{nth}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption}
+\usepackage{comment}
+\usepackage{setspace}
+\usepackage{textcomp}
+\usepackage{xspace}
+\usepackage{siunitx}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{soul}
+\usepackage{url}
+\usepackage{tablefootnote}
+\DeclareMathOperator{\E}{\mathbb{E}} % Expectation Symbol
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{booktabs}
+
+\title{A Novel Mechanism for Access Point Association in IEEE 802.11 WLANs}
+\author{Marc Carrascosa, Boris Bellalta and Francesc Wilhelmi}
 \date{November 2017}
 
 \begin{document}
 
 \maketitle
-\tableofcontents
-\section{Introduction}
 
-\section{Related work}
-\section{User-associated strategies \& Metrics}
-\section{Performance evaluation}
+\begin{abstract}
+	Abstract here. To be done at the end.
+\end{abstract}
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%
+% INTRODUCTION     
+%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{section:introduction}
+	
+	% MOTIVATION
+	\subsection{Motivation}
+	\label{section:motivation}
+		\textcolor{red}{Explain why AP association is important. Motivate the problem a bit by mentioning density issues in next-generation WLANs, problems in current association procedures (e.g., keeping the signal forever), etc.}
+	
+	% CONTRIBUTIOn
+	\subsection{Contributions}
+	\label{section:contributions}
+		\textcolor{red}{To do: make a list of contributions done in this paper (e.g., we review the previous work in AP association in WLANs, we implement a learning mechanism for AP association, we provide a quantitative analysis on different AP association strategies, etc.)}
+	
+	% STRUCTURE
+	\subsection{Article Structure}
+	\label{section:article_structure}
+			\textcolor{red}{To be done at the end}
+			
+%%%%%%%%%%%%%%%%%%%
+% RELATED WORK     
+%%%%%%%%%%%%%%%%%%%
+\section{Related Work}
+\label{section:related_work}
+	\textcolor{red}{To do: start explaining the previous work that is based on SSF and say why it can be harmful to the overall performance. Include new other methods that have been previously used (based on SINR, traffic load, etc.)}
+
+%%%%%%%%%%%%%%%%%%%
+% STRATEGIES     
+%%%%%%%%%%%%%%%%%%%
+\section{User Association Strategies \& Metrics}
+\label{section:strategies}
+
+	% DECENTRALIZED
+	\subsection{Decentralized Approach}
+	\label{section:decentralized}
+	
+		\subsubsection{Selfish Strategy}
+		\label{section:selfish}
+			STAs only consider their own throughput during the decision-making procedure.
+			
+		\subsubsection{Shared Strategy}
+		\label{section:shared}
+			STAs take also into account the throughput at the AP.
+	
+		\subsubsection{Thompson Sampling}
+		\label{section:thompson}
+			STAs implement Thompson sampling to learn the best AP for association. 
+			
+			\textcolor{red}{To do: explain how MABs can be applied to the AP association problem.}	
+			
+			Thompson sampling \cite{thompson1933likelihood} is a Bayesian algorithm that bases the action-selection procedure according to the prior distributions of the actions' rewards. In particular, it constructs a probabilistic model of the rewards and assumes a prior distribution of the parameters of said model. Given the data collected during the learning procedure, Thompson sampling keeps track of the posterior distribution of the rewards, and pulls arms randomly in a way that the drawing probability of each arm matches the probability of the particular arm being optimal. In practice, this is implemented by sampling the parameter corresponding to each arm from the posterior distribution, and pulling the arm yielding the maximal expected reward under the sampled parameter value.
+					
+			Thompson sampling is well-known in the Machine Learning community for its excellent empirical performance \cite{CL11}. 
+			 
+			To the AP association problem, we assume that actions rewards (i.e., user associations) follow a Gaussian distribution, such as suggested in \cite{agrawal2013further}. By standard calculations, it can be verified that the posterior distribution of the rewards under this model is Gaussian with mean 
+			\begin{equation}
+				\hat{r}_k(t) = \frac{\sum_{w=1:k}^{t-1} r_k(t) }{n_k(t) + 1}
+				\nonumber
+			\end{equation}
+			and variance $\sigma_k^2(t) = \frac{1}{n_k + 1}$, where $n_k$ is the number of times that arm $k$ was drawn until the beginning of round $t$. Thus, implementing Thompson sampling in this model amounts to sampling a parameter $\theta_k$ from the Gaussian distribution $\mathcal{N}\left(\hat{r}_k(t),\sigma_k^2(t)\right)$ and choosing the action with the maximal parameter.   
+			
+			Our implementation of Thompson sampling to the AP association problem is detailed in Algorithm \ref{alg:thompson_sampling}.
+			\textcolor{red}{To do: modify algorithm accordingly.}	
+			\begin{algorithm}[h!]
+				\SetKwInOut{Input}{Input}
+				\SetKwInOut{Output}{Output}		
+				Function Thompson Sampling $(\text{SNR},\mathcal{A})$\;
+				\Input{SNR: information about the Signal-to-Noise Ratio received at the STA\\$\mathcal{A}$: set of possible actions in \{$a_1, ..., a_K$\}}
+				initialize: $t=0$,  for each arm $a_k \in \mathcal{A}$, set $\hat{r}_{k} = 0$ and $n_k = 0$ \\
+				\While{active}
+				{
+					For each arm $a_k \in \mathcal{A}$, sample $\theta_k(t)$ from normal distribution $\mathcal{N}(\hat{r}_{k}, \frac{1}{n_k + 1})$ \\
+					Play arm $a_{k} = \underset{k=1,...,K}{\text{argmax }} \theta_k(t) $ \\
+					Observe the throughput experienced $\Gamma_t$\\			
+					Compute the reward $r_{k,t} = \frac{\Gamma_t}{\Gamma^*}$, where $\Gamma^* = B \log_{2}(1+\text{SNR})$ \\
+					$ \hat{r}_{k,t} \leftarrow \frac{\hat{r}_{k,t}  n_{k,t} + r_{k,t}}{n_{k,t} + 2}$\\
+					$n_{k,t} \leftarrow n_{k,t} + 1$\\
+					$t \leftarrow t + 1$
+				}
+				\caption{Implementation of Multi-Armed Bandits (Thompson sampling) in a STA that aims to associate to the best AP}
+				\label{alg:thompson_sampling}
+			\end{algorithm}	
+			
+	% CENTRALIZED
+	\subsection{Centralized Approach}
+	\label{section:centralized}
+	
+		\subsubsection{Aggregate Throughput}
+		\label{section:aggregate_throughput}
+		
+		\subsubsection{Proportional Fairness}
+		\label{section:prop_fairness}
+		
+		\subsubsection{Individual + Aggregate Throughput}
+		\label{section:mix}
+
+%%%%%%%%%%%%%%%%%%%
+% RESULTS     
+%%%%%%%%%%%%%%%%%%%
+\section{Performance Evaluation}
+\label{section:performance_evaluation}
+
+	% SYSTEM MODEL
+	\subsection{System Model}
+	\label{section:system_model}
+		\textcolor{red}{To do: explain how throughput is computed and other simulation considerations (e.g., we first pick the lowest throughput STA). Add also tables with parameters used (CW, Ts...)}	
+	
+	% VALIDATION
+	\subsection{Validation}
+	\label{section:validation}
+	
+	% RESULTS
+	\subsection{Results}
+	\label{section:results}
+
+%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY     
+%%%%%%%%%%%%%%%%%%%
 \section{Conclusions}
+\label{section:conclusions}
+
+%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY     
+%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{unsrt}
+\bibliography{bib}
+
 \end{document}
