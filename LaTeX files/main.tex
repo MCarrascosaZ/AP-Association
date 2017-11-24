@@ -28,6 +28,12 @@
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage{booktabs}
 
+
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+
+
 \title{A Novel Mechanism for Access Point Association in IEEE 802.11 WLANs}
 \author{Marc Carrascosa, Boris Bellalta and Francesc Wilhelmi}
 \date{November 2017}
@@ -41,7 +47,7 @@
 \end{abstract}
 
 \tableofcontents
-
+\newpage
 %%%%%%%%%%%%%%%%%%%
 % INTRODUCTION     
 %%%%%%%%%%%%%%%%%%%
@@ -52,12 +58,32 @@
 	\subsection{Motivation}
 	\label{section:motivation}
 		\textcolor{red}{Explain why AP association is important. Motivate the problem a bit by mentioning density issues in next-generation WLANs, problems in current association procedures (e.g., keeping the signal forever), etc.}
+
+	The default method used in 802.11 for STAs to find and associate to an AP is based on the Signal to Noise Ratio (SNR) they receive from each AP. This method works for home deployments where a single AP is present, but in multi AP deployments it can lead to an unfair system with starved nodes. The growing popularity of wi-fi for massive deployments in malls, airports and the like has shown the deficiencies in the Strongest Signal First method \cite{judd2004}\cite{anand2002}, which fails to take into consideration the AP load or the topology of the network, as well as not reassociating until absolutely necessary, even if the node could get a much better service elsewhere.
+	
+	Other methods attempted have to use more metrics than SNR for their decision making, such as potential bandwidth estimation \cite{vasudevan2005}, channel utilization, or proportional fairness. This more often than not means higher computation time and possible delays that need to be taken into consideration. This computation can be done by the STAs themselves in a decentralized fashion or by a central hub that makes the decisions and then transmits them to the STAs. 
+	
+	
+	Revisions in the 802.11 protocol seem to take this into consideration, 802.11r brought the neighbor report, which has the AP obtain information on other APs and relay it to its STAs to help them make informed decisions on reassociations. 
+	
+	The recent popularity of machine learning is also worth take into account, as it brings new ways of analyzing all this information and making better decisions when finding multiple APs.
+	
+	
 	
 	% CONTRIBUTIOn
 	\subsection{Contributions}
 	\label{section:contributions}
 		\textcolor{red}{To do: make a list of contributions done in this paper (e.g., we review the previous work in AP association in WLANs, we implement a learning mechanism for AP association, we provide a quantitative analysis on different AP association strategies, etc.)}
-	
+		
+		Our intent in this document is to showcase the inefficiency of the SSF method in multi AP deployments by using several methods of association selection and comparing them in both fairness and throughput achieved.
+		
+		We will try a greedy mechanism in which each STA tries to improve its own throughput while disregarding the effect on the rest of the nodes, this method will also show that the order in which the STAs reassociate is an important factor that can create a deadlock in the network, stopping it from reaching a better solution or leaving it in a worse one than before.
+		
+		We will also try centralized methods in which the effect of every single reassociation is anlayzed before being allowed, by comparing the aggregate throughput of the netire network as well as the proportional fairness achieved. By only allowing the changes that improve this metrics, we stop the STAs to find a better solution for themselves that leaves other users with a bad service. This simple solution is also affected by the order of the reassociations however, and can also prevent itself from reaching an optimal solution.
+		
+		Finally we will try Thompson sampling, which uses sampling from a normal distribution to check different scenarios, updating the parameters of the distribution with each iteration to achieve better results over time. In this particular case all of the STAs switch at the same time, and due to the randomness that is present in the algorithm, it prevents itself from deadlocking.
+		
+		
 	% STRUCTURE
 	\subsection{Article Structure}
 	\label{section:article_structure}
@@ -118,7 +144,7 @@
 					For each arm $a_k \in \mathcal{A}$, sample $\theta_k(t)$ from normal distribution $\mathcal{N}(\hat{r}_{k}, \frac{1}{n_k + 1})$ \\
 					Play arm $a_{k} = \underset{k=1,...,K}{\text{argmax }} \theta_k(t) $ \\
 					Observe the throughput experienced $\Gamma_t$\\			
-					Compute the reward $r_{k,t} = \frac{\Gamma_t}{\Gamma^*}$, where $\Gamma^* = B \log_{2}(1+\text{SNR})$ \\
+					Compute the reward $r_{k,t} = \frac{\Gamma_t}{\Gamma^*}$, where $\Gamma^* = \frac{L}{(T_{STA}+E[\Phi])*2}$ \\
 					$ \hat{r}_{k,t} \leftarrow \frac{\hat{r}_{k,t}  n_{k,t} + r_{k,t}}{n_{k,t} + 2}$\\
 					$n_{k,t} \leftarrow n_{k,t} + 1$\\
 					$t \leftarrow t + 1$
@@ -150,7 +176,76 @@
 	\subsection{System Model}
 	\label{section:system_model}
 		\textcolor{red}{To do: explain how throughput is computed and other simulation considerations (e.g., we first pick the lowest throughput STA). Add also tables with parameters used (CW, Ts...)}	
-	
+	\begin{center}\renewcommand*{\arraystretch}{1.25}
+\setlength\tabcolsep{15pt}
+
+\begin{tabular}{|c|c|}
+
+
+  \hline
+  
+   \textbf{Field} & \textbf{Meaning}\\ \hline
+ $\alpha$  & Approximation of the throughput \\\hline
+  E[$\Phi$] & Average back-off\\\hline
+  CW & Contention window \\\hline
+  $T_e$ & Slot left after a successful transmission in DCF \\\hline
+  $T_i$ & Successful transmission time for node i\\\hline
+  $L_i$ & Length of packets sent by node i\\\hline
+  $N_{STAi}$ & Number of STAs connected to AP i\\\hline
+  $T_{data}$ & Transmission time for the data alone\\\hline
+  $T_{ack}$ & Transmission time for an ACK\\\hline
+  $DIFS$ & DCF InterFrame Space \\\hline
+  $SIFS$ & Short InterFrame Space \\\hline
+
+
+\end{tabular}
+
+\end{center}
+
+
+
+\begin{center}\renewcommand*{\arraystretch}{1.25}
+\setlength\tabcolsep{15pt}
+
+\begin{tabular}{|P{1cm}|P{7.25cm}|}
+
+
+  \hline
+  
+   \textbf{Field} & \textbf{Value}\\ \hline
+  CW & 16 \\\hline
+   E[$\Phi$] & $\frac{CW-1}{2}=\frac{15}{2}=7.5$ \\\hline
+  $T_e$ & $9 \mu s$\\\hline
+  $L_i$ & 12000 bits\\\hline
+  $DIFS$ & $34 \mu s$\\\hline
+  $SIFS$ & $16 \mu s$\\\hline
+
+
+\end{tabular}
+
+\end{center}
+
+Our simulation uses a random topology in which the APs and STAs are distributed at random in a square area. Each of them has a full buffer and the same parameters for the backoff and the size of their packets.
+
+\begin{equation}\label{eq:1}
+    T_{i}= T_{data} + SIFS + T_{ack} + DIFS + T_e;
+\end{equation}
+
+\begin{equation}\label{eq:2}
+    T_{APi}=\frac{\sum T_i}{N_{STAi}}
+\end{equation}
+
+\begin{equation}\label{eq:3}
+   X_i=E[\Phi_i]+T_i;
+\end{equation}
+\begin{equation}\label{eq:4}
+    \alpha_i = \frac{L_i}{\sum_{j=1}^{N} X_{j}}
+\end{equation}
+
+Equation \ref{eq:1} computes the successful transmission time for a packet from a STA, $T_{data}$ is affected by distance to the AP and packet size $L_i$. For the transmission time of an AP, we have equation \ref{eq:2}, which takes the sum of $T_i$ for each STA associated to the AP and divides it by the number of STAs associated.
+
+Equation \ref{eq:3} just adds the average back-off to each transmission time, and finally, equation \ref{eq:4} computes the alpha of the nodes dividing the packet size for each node by the X of every node sensed. We will use this as our throughput.
+
 	% VALIDATION
 	\subsection{Validation}
 	\label{section:validation}
