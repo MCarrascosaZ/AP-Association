@@ -97,6 +97,22 @@
 	\textcolor{red}{To do: start explaining the previous work that is based on SSF and say why it can be harmful to the overall performance. Include new other methods that have been previously used (based on SINR, traffic load, etc.)}
 	
 	The standard method of AP selection based on signal strength has been shown to lead to uneven load distribution and client distribution among APs \cite{anand2002, balazinska2003}. These analysis of user behaviour show that the number of users on an AP is related to the popularity of the location of said AP, however, peak throughput is not achieved when the maximum number of users is achieved, instead, most peaks in the system depend on the needs of individual users. The results in \cite{balazinska2003} show that 10\% of users are responsible for 40 \% of the load in most APs. 
+	
+	In \cite{gong2012} STAs use the beacon frames to measure the signal strength of each AP that is in range and compute the throughput they could achieve by associating to each of them. It also categorizes APs by type (g,n,a) and tries to match STAs to APs of similar type. A similar method is used in \cite{sun2004}, where probes are used to measure the AP's available bandwidth to decide which one to choose. Once associated, the STA periodically checks if their individual service requirements are met, and if the service is considered insufficient, probing starts so that a better AP can be found.
+	
+	Proportional fairness is the preferred compromise between throughput and fairness \cite{Li2014} \cite{amer2016}, it attemps to give each STA a throughput that is proportional to its individual capabilities instead of giving everyone the same. 
+	
+		\textcolor{blue}{No sé si és rellevant el seguent paràgraf, ho vaig trobar i és interessant però potser s'allunya molt}
+		
+	A different approach can be found in \cite{tan2004}, where changing the DCF model used in most systems is proposed. The change is made by going from throughput-based fairness to time-based fairness through the use of a leaky bucket that makes each node transmit an equal amount of time. In the usual DCF model, time-based fairness is only achieved in the  when all nodes share the same characteristics of transmission rate, packet size and error rate. When there are different rates and types of nodes (b,g,a) the network allows them all to send an equal amount of packets, which leads to the slower nodes taking more time than the faster ones, which can be considered unfair. This method allows the faster nodes to get a much higher throughput while keeping the slower ones at a rate equal to the one they would get if the entire network shared their transmission rate.
+	
+	Some approaches are based on the modern standards and their new features, such as 802.11ac MU-MIMO, the authors of \cite{mimo2017} forego the RSSI values completely and instead concentrate on the channel correlation and MIMO-grouping possibilities in an 11ac network to decide the association, further proving that the default association system is not good enough going forward.
+	
+We can already find some systems that implement some sort of load balncing and association control. Cisco's APs have an aggressive load balncing option in which the AP accepts all association requests until a certain number of nodes are associated, afterwards, any probe request is met with a response status with code 17, which the STA is expected to honor by attempting association with other APs. A maximum number of code 17 responses can be set, with a maximum of 20, after which the STA is allowed to associate with the original AP \cite{cisco2017}. Further, Cisco's Lightweight Access Point Protocol (LWAPP) also allows for load balancing, the lightweight access points send the probe requests they receive to the controller, and using their loads and the RSSI of the STA as parameters, it chooses which AP will answer the probe \cite{cisco2006}.
+	
+	
+	
+	
 %%%%%%%%%%%%%%%%%%%
 % STRATEGIES     
 %%%%%%%%%%%%%%%%%%%
