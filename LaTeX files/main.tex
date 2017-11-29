@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{ article}
 \usepackage[utf8]{inputenc}
 
 \usepackage{color}
@@ -48,6 +48,7 @@
 
 \tableofcontents
 \newpage
+
 %%%%%%%%%%%%%%%%%%%
 % INTRODUCTION     
 %%%%%%%%%%%%%%%%%%%
@@ -61,7 +62,7 @@
 
 	The default method used in 802.11 for STAs to find and associate to an AP is based on the Signal to Noise Ratio (SNR) they receive from each AP. This method works for home deployments where a single AP is present, but in multi AP deployments it can lead to an unfair system with starved nodes. The growing popularity of wi-fi for massive deployments in malls, airports and the like has shown the deficiencies in the Strongest Signal First method \cite{judd2004}\cite{anand2002}, which fails to take into consideration the AP load or the topology of the network, as well as not reassociating until absolutely necessary, even if the node could get a much better service elsewhere.
 	
-	Other methods attempted have to use more metrics than SNR for their decision making, such as potential bandwidth estimation \cite{vasudevan2005}, channel utilization, or proportional fairness. This more often than not means higher computation time and possible delays that need to be taken into consideration. This computation can be done by the STAs themselves in a decentralized fashion or by a central hub that makes the decisions and then transmits them to the STAs. 
+	Other methods attempted have to use more metrics than SNR for their decision making, such as potential bandwidth estimation \cite{vasudevan2005} or proportional fairness\cite{Li2014}. This more often than not means higher computation time and possible delays that need to be taken into consideration. This computation can be done by the STAs themselves in a decentralized fashion or by a central hub that makes the decisions and then transmits them to the STAs. 
 	
 	
 	Revisions in the 802.11 protocol seem to take this into consideration, 802.11r brought the neighbor report, which has the AP obtain information on other APs and relay it to its STAs to help them make informed decisions on reassociations. 
@@ -104,11 +105,13 @@
 	
 		\textcolor{blue}{No sé si és rellevant el seguent paràgraf, ho vaig trobar i és interessant però potser s'allunya molt}
 		
-	A different approach can be found in \cite{tan2004}, where changing the DCF model used in most systems is proposed. The change is made by going from throughput-based fairness to time-based fairness through the use of a leaky bucket that makes each node transmit an equal amount of time. In the usual DCF model, time-based fairness is only achieved in the  when all nodes share the same characteristics of transmission rate, packet size and error rate. When there are different rates and types of nodes (b,g,a) the network allows them all to send an equal amount of packets, which leads to the slower nodes taking more time than the faster ones, which can be considered unfair. This method allows the faster nodes to get a much higher throughput while keeping the slower ones at a rate equal to the one they would get if the entire network shared their transmission rate.
+	A different approach can be found in \cite{tan2004}, where instead of changing the association process, they change the DCF model and the way that each node gets access to the bandwidth. The change is made by going from throughput-based fairness to time-based fairness through the use of a leaky bucket that makes each node transmit an equal amount of time. In the usual DCF model, time-based fairness is only achieved in the  when all nodes share the same characteristics of transmission rate, packet size and error rate. When there are different rates and types of nodes (b,g,a) the network allows them all to send an equal amount of packets, which leads to the slower nodes taking more time than the faster ones, which can be considered unfair. This method allows the faster nodes to get a much higher throughput while keeping the slower ones at a rate equal to the one they would get if the entire network shared their transmission rate. This system is already in place in some devices\cite{aruba2010}.
 	
 	Some approaches are based on the modern standards and their new features, such as 802.11ac MU-MIMO, the authors of \cite{mimo2017} forego the RSSI values completely and instead concentrate on the channel correlation and MIMO-grouping possibilities in an 11ac network to decide the association, further proving that the default association system is not good enough going forward.
 	
-We can already find some systems that implement some sort of load balncing and association control. Cisco's APs have an aggressive load balncing option in which the AP accepts all association requests until a certain number of nodes are associated, afterwards, any probe request is met with a response status with code 17, which the STA is expected to honor by attempting association with other APs. A maximum number of code 17 responses can be set, with a maximum of 20, after which the STA is allowed to associate with the original AP \cite{cisco2017}. Further, Cisco's Lightweight Access Point Protocol (LWAPP) also allows for load balancing, the lightweight access points send the probe requests they receive to the controller, and using their loads and the RSSI of the STA as parameters, it chooses which AP will answer the probe \cite{cisco2006}.
+We can already find some systems that implement some sort of load balancing and association control. Cisco's APs have an aggressive load balancing option in which the AP accepts all association requests until a certain number of nodes are associated, afterwards, any probe request is met with a response status with code 17, which the STA is expected to honor by attempting association with other APs. A maximum number of code 17 responses can be set, with a maximum of 20, after which the STA is allowed to associate with the original AP \cite{cisco2017}. Further, Cisco's Lightweight Access Point Protocol (LWAPP) also allows for load balancing, the lightweight access points send the probe requests they receive to the controller, and using their loads and the RSSI of the STA as parameters, it chooses which AP will answer the probe \cite{cisco2006}.
+
+Other approaches attempt a more automated solution, relying on the machines to learn the best solution over time. \cite{shin2004} tries to improve the handoff of reassociations by having the STAs keep a list of APs found during scanning organized by RSSI and trying those directly in the future, skipping scanning.
 	
 	
 	
