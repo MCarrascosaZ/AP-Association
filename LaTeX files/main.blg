@@ -3,44 +3,47 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: main.aux
 The style file: unsrt.bst
 Database file #1: bib.bib
-You've used 3 entries,
+Name 5 in "Li, Wei and Wang, Shengling and Cui, Yong and Cheng, Xiuzhen and Xin, Ran, and Mznah, A. Al-Rodhaan and Al-Dhelaan, Abdullah" has a comma at the end for entry Li2014
+while executing---line 944 of file unsrt.bst
+You've used 18 entries,
             1791 wiz_defined-function locations,
-            469 strings with 4091 characters,
-and the built_in function-call counts, 1063 in all, are:
-= -- 102
-> -- 37
-< -- 2
-+ -- 13
-- -- 10
-* -- 67
-:= -- 153
-add.period$ -- 10
-call.type$ -- 3
-change.case$ -- 3
+            547 strings with 7001 characters,
+and the built_in function-call counts, 4406 in all, are:
+= -- 387
+> -- 199
+< -- 7
++ -- 73
+- -- 55
+* -- 250
+:= -- 673
+add.period$ -- 52
+call.type$ -- 18
+change.case$ -- 18
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 52
-empty$ -- 103
-format.name$ -- 10
-if$ -- 249
+cite$ -- 18
+duplicate$ -- 213
+empty$ -- 416
+format.name$ -- 55
+if$ -- 1026
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 3
-newline$ -- 18
-num.names$ -- 5
-pop$ -- 13
+int.to.str$ -- 18
+missing$ -- 15
+newline$ -- 90
+num.names$ -- 20
+pop$ -- 64
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 35
+skip$ -- 144
 stack$ -- 0
-substring$ -- 92
-swap$ -- 22
-text.length$ -- 2
+substring$ -- 260
+swap$ -- 80
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 12
-width$ -- 4
-write$ -- 36
+while$ -- 39
+width$ -- 20
+write$ -- 188
+(There was 1 error message)

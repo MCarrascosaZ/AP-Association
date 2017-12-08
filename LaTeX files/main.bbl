@@ -1,4 +1,92 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{judd2004}
+Glenn Judd and Peter Steenkiste.
+\newblock Fixing 802.11 access point selection.
+\newblock {\em ACM SIGCOMM Computer Communication Review}, 32(3):31--31, 2002.
+
+\bibitem{anand2002}
+Anand Balachandran, Geoffrey M.~Voelker, Paramvir Bahl, and Venkat P.Rangan.
+\newblock Characterizing user behavior and network performance in a public
+  wireless lan.
+\newblock {\em ACM SIGMETRICS Performance Evaluation Review - Measurement and
+  modeling of computer systems}, 30(1):195--205, 2002.
+
+\bibitem{vasudevan2005}
+S.~Vasudevan, K.~Papagiannaki, C.~Diot, J.~Kurose, and D.~Towsley.
+\newblock Facilitating access point selection in ieee 802.11 wireless networks.
+\newblock {\em IMC '05 Proceedings of the 5th ACM SIGCOMM conference on
+  Internet measurement}, pages 26--26, 2005.
+
+\bibitem{Li2014}
+Wei Li, Shengling Wang, Yong Cui, Xiuzhen Cheng, Ran Xin, A.~Al-Rodhaan Mznah,
+  and Abdullah Al-Dhelaan.
+\newblock Ap association for proportional fairness in multirate wlans.
+\newblock {\em IEEE/ACM Transactions on networking}, 22(1), 2014.
+
+\bibitem{balazinska2003}
+Magdalena Balazinska and Paul Castro.
+\newblock Characterizing mobility and network usage in a corporate wireless
+  local-area network.
+\newblock {\em MobiSys '03 Proceedings of the 1st international conference on
+  Mobile systems, applications and services}, pages 303--316, 2003.
+
+\bibitem{gong2012}
+Dawei Gong and Yang Yuanyuan.
+\newblock Ap association in s02.lln wlans with heterogeneous clients.
+\newblock {\em 2012 Proceedings IEEE INFOCOM}, pages 1440--1448, 2012.
+
+\bibitem{sun2004}
+Tingting Sun, Yanyong Zhang, and Wade Trappe.
+\newblock Improving access point association protocols through channel
+  utilization and adaptive switching.
+\newblock {\em Eighth IEEE International Conference on Mobile Ad-Hoc and Sensor
+  Systems}, 2011.
+
+\bibitem{amer2016}
+Mohammed Amer, Anthony Busson, and Isabelle Guérlin~Lassous.
+\newblock Association optimization in wi-fi networks: Use of an access-based
+  fairness.
+\newblock {\em The 19th ACM International Conference on Modeling, Analysis and
+  Simulation of Wireless and Mobile Systems (MSWIM)}, pages 119--126, 2016.
+
+\bibitem{tan2004}
+Godfrey Tan and John Guttag.
+\newblock Time-based fairness improves performance in multi-rate wlans.
+\newblock {\em Proceedings of the General Track: 2004 USENIX Annual Technical
+  Conference}, 2004.
+
+\bibitem{aruba2010}
+Aruba networks.
+\newblock High-density wireless networks for auditoriums validated reference
+  design, 2010.
+
+\bibitem{mimo2017}
+Yunze Zeng, Ioannis Pefkianakis, Kyu-Han Kim, and Prasant Mohapatra.
+\newblock Mu-mimo-aware ap selection for 802.11ac networks.
+\newblock {\em Mobihoc '17 Proceedings of the 18th ACM International Symposium
+  on Mobile Ad Hoc Networking and Computing}, 2017.
+
+\bibitem{cisco2017}
+Cisco.
+\newblock Configuring aggressive load balancing, 2017.
+
+\bibitem{cisco2006}
+Cisco.
+\newblock The benefits of centralization in wireless lans via the cisco unified
+  wireless network, 2006.
+
+\bibitem{shin2004}
+Sangho Shin, Andrea G.Forte, Anshuman Singh~Rawat, and Henning Schulzrinne.
+\newblock Reducing mac layer handoff latency in ieee 802.11 wireless lans.
+\newblock {\em MobiWac '04 Proceedings of the second international workshop on
+  Mobility management \& wireless access protocols}, pages 19--26, 2004.
+
+\bibitem{bojovic2011}
+Biljana Bojovic, Nicola Baldo, Jaume Nin-Guerrero, and Paolo Dini.
+\newblock A supervised learning approach to cognitive access point selection.
+\newblock {\em GLOBECOM Workshops, Joint Workshop of SCPA 2011 and SaCoNAS
+  2011}, 2011.
 
 \bibitem{thompson1933likelihood}
 William~R Thompson.
